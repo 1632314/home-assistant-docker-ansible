@@ -33,16 +33,18 @@
 - name: Ensure the docker-compose template directory exists
   ansible.builtin.file:
     state: directory
-    path: "/opt/ansible-docker-compose/home-assistant"
+    path: "{{ home_assistant_host_config_dir }}/../ansible-docker-compose/home-assistant"
     mode: 0755
 
 - name: Ensure this service's docker-compose template is present
   ansible.builtin.template:
     src: docker-compose.yml.j2
-    dest: /opt/ansible-docker-compose/home-assistant/docker-compose.yml
+    dest: "{{ home_assistant_host_config_dir }}/../ansible-docker-compose/home-assistant/docker-compose.yml"
+    force: true
     mode: 0644
+  notify: Restart home-assistant
 
 - name: Ensure the service container(s) is/are started
   community.docker.docker_compose:
-    project_src: /opt/ansible-docker-compose/home-assistant
+    project_src: "{{ home_assistant_host_config_dir }}/../ansible-docker-compose/home-assistant"
     pull: true

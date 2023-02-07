@@ -11,18 +11,14 @@ services:
 {% endfor %}
 {% endif %}
     restart: always
-{% if home_assistant_network_name and not home_assistant_host_network_mode %}
+{% if not home_assistant_network_name and not home_assistant_host_network_mode %}
     ports:
-{% for port in home_assistant_network_name %}
-      - "{{ port }}"
+{% for port in home_assistant_ports %}
+      - {{ port }}:{{ port }}
 {% endfor %}
 {% endif %}
-{% if home_assistant_network_name and not home_assistant_host_network_mode %}
-    networks:
-      - {{ home_assistant_network_name }}
-{% endif %}
 {% if home_assistant_host_network_mode %}
-    network_mode: host
+    network_mode: {{ home_assistant_host_network_mode }}
 {% endif %}
 {% if _home_assistant_docker_volumes %}
     volumes:

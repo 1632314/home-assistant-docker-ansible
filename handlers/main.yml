@@ -1,6 +1,6 @@
 ---
 - name: Restart home-assistant
   community.docker.docker_compose:
-    project_src: /opt/ansible-docker-compose/home-assistant
+    project_src: "{{ home_assistant_host_config_dir }}/../ansible-docker-compose/home-assistant"
     restarted: true
     pull: true
